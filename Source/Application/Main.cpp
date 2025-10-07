@@ -31,14 +31,20 @@ int main(int argc, char* argv[]) {
         neu::GetEngine().GetRenderer().SetColor(color.r, color.g, color.b);
         neu::GetEngine().GetRenderer().Clear();
 
-        glBegin(GL_TRIANGLES);
+        glBegin(GL_TRIANGLE_FAN);
 
         glColor3f(0, 1, 1);
-        glVertex3f(0, 0.5, 0);
+        glVertex3f(0, 0, 0);
         glColor3f(1, 1, 0);
-        glVertex3f(0.5, -0.5, 0);
+        glVertex3f(-0.5, 0.5, 0);
         glColor3f(1, 0, 1);
-        glVertex3f(-0.5, -0.5, 0);
+        glVertex3f(-0.5, 0, 0);
+        glColor3f(0.5, 0.5, 1);
+        glVertex3f(0, -0.5, 0);
+        glColor3f(1, 0, 1);
+        glVertex3f(0.5, 0, 0);
+        glColor3f(1, 1, 0);
+        glVertex3f(0.5, 0.5, 0);
 
         glEnd();
 
