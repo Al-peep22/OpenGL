@@ -8,7 +8,7 @@ namespace neu {
     /// </summary>
     Texture::~Texture() {
         // If texture exists, destroy texture to free GPU resources
-        if (m_texture) SDL_DestroyTexture(m_texture);
+		if(m_texture) glDeleteTextures(1, &m_texture);
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace neu {
     /// <param name="filename">Path to the image file to load</param>
     /// <param name="renderer">Reference to the Renderer that provides the SDL_Renderer context</param>
     /// <returns>True if the texture was successfully loaded and created; otherwise, false</returns>
-    bool Texture::Load(const std::string& filename, Renderer& renderer) {
+    bool Texture::Load(const std::string& filename) {
         // Load image onto a CPU-side surface
         // SDL_image supports various formats: PNG, JPG, BMP, GIF, etc.
         SDL_Surface* surface = IMG_Load(filename.c_str());
@@ -29,6 +29,21 @@ namespace neu {
             LOG_ERROR("Could not load image: {}", filename);
             return false;
         }
+
+		const SDL_PixelFormatDetails* details = SDL_GetPixelFormatDetails(surface->format);
+
+        int channels = details->bytes_per_pixel;
+        GLenum internalFormat = (channels == 4) ? GL_RGBA8 : GL_RGB8;
+        GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
+
+        glGenTextures(1, &m_texture);
+		glBindTexture(m_target, m_texture);
+        glActiveTexture(0);
+
+		glTexImage2D(m_target, 0, internalFormat, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
+
+		glActiveTexture(GL_TEXTURE1);
+		SDL_DestroySurface(surface);
 
         return true;
     } 

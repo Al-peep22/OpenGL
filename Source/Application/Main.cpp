@@ -48,6 +48,11 @@ int main(int argc, char* argv[]) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
+    // Color
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
     // Vertex Shader
     std::string vs_source;
     neu::file::ReadTextFile("Shaders/basic.vert", vs_source);
@@ -90,25 +95,31 @@ int main(int argc, char* argv[]) {
     }
 
     // Program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vs);
-    glAttachShader(shaderProgram, fs);
-    glLinkProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success)
     {
         std::string infoLog(512, '\0');  // pre-allocate space
         GLsizei length;
-        glGetProgramInfoLog(shaderProgram, (GLsizei)infoLog.size(), &length, &infoLog[0]);
+        glGetProgramInfoLog(program, (GLsizei)infoLog.size(), &length, &infoLog[0]);
         infoLog.resize(length);
 
         LOG_WARNING("Program link failed: {}", infoLog);
     }
-    glUseProgram(shaderProgram);
+    glUseProgram(program);
+
+    // TEXTURE
+    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("Textures/beast.png");
 
     // Uniform
-    GLint uniform = glGetUniformLocation(shaderProgram, "u_time");
+    GLint uniform = glGetUniformLocation(program, "u_time");
     ASSERT_MSG(uniform != -1, "Could not find uniform u_time.");
+
+	GLint tex_uniform = glGetUniformLocation(program, "u_texture");
+    glUniform1i(tex_uniform, 0);
 
     SDL_Event e;
     bool quit = false;
@@ -147,9 +158,9 @@ int main(int argc, char* argv[]) {
 
 
         // draw
-        neu::vec3 color{ 0, 0, 0 };
+        /*neu::vec3 color{ 0, 0, 0 };
         neu::GetEngine().GetRenderer().SetColor(color.r, color.g, color.b);
-        neu::GetEngine().GetRenderer().Clear();
+        neu::GetEngine().GetRenderer().Clear();*/
 
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)points.size());
