@@ -30,22 +30,6 @@ namespace neu {
             return false;
         }
 
-        // Create a GPU-side texture from the surface
-        // The renderer is a friend class, so we can access m_renderer directly
-        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
-
-        // Once texture is created on GPU, the CPU-side surface can be freed
-        // This saves memory as we only need the GPU texture for rendering
-        SDL_DestroySurface(surface);
-
-        if (!m_texture) {
-            LOG_ERROR("Could not create texture: {}", filename);
-            return false;
-        }
-
-        // Query the texture for its dimensions
-        SDL_GetTextureSize(m_texture, &m_size.x, &m_size.y);
-
         return true;
     } 
 }
