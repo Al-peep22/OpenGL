@@ -12,18 +12,69 @@ int main(int argc, char* argv[]) {
 
 	// OPEN_GL SETUP
     std::vector<neu::vec3> points = {
-        {0, 0.5, 0},
-        {-0.5, -0.5, -0.5},
-        {0.5, -0.5, 0.5}
+		//  x ,   y ,   z ,
+        {  0.0,  0.5,  0.0 },
+        { -0.5, -0.5, -0.5 },
+        {  0.5, -0.5,  0.5 },
     };
     std::vector<neu::vec3> colors = {
-        {0, 1, 1},  // teal
-        {1, 1, 0},  // yellow
-		{1, 0, 1}   // pink
+        { 0.0, 1.0, 1.0 },  // teal
+        { 1.0, 1.0, 0.0 },  // yellow
+		{ 1.0, 0.0, 1.0 },  // pink
+    };
+	std::vector<neu::vec2> texcoord = {
+		{0.5, 1.0},
+		{0.0, 0.0},
+		{1.0, 0.0}
+	};
+
+    struct Vertex {
+        neu::vec3 position;
+        neu::vec3 color;
+        neu::vec2 texcoord;
     };
 
-    GLuint vbo[2];
-    glGenBuffers(2, vbo);
+    std::vector<Vertex> vertices{ 
+        { {  0.0,  0.5,  0.0}, {0, 1, 1}, {0.5, 1.0}},
+        { { -0.5, -0.5, -0.5}, {1, 1, 0}, {0.0, 0.0}},
+        { {  0.5, -0.5,  0.5}, {1, 0, 1}, {1.0, 0.0}},
+    };
+
+	std::vector<GLuint> indices = { 0, 1, 2 };
+
+    // vertex buffer
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+
+    // index buffer
+	GLuint ibo;
+	glGenBuffers(1, &ibo);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size(), indices.data(), GL_STATIC_DRAW);
+
+    // Vertex Array
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+	glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texcoord));
+
+    /*
+    GLuint vbo[3];
+    glGenBuffers(3, vbo);
 
     // Vertex Buffer (position)
     glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
@@ -52,10 +103,11 @@ int main(int argc, char* argv[]) {
     glEnableVertexAttribArray(2);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    */
 
     // Vertex Shader
     std::string vs_source;
-    neu::file::ReadTextFile("Shaders/basic.vert", vs_source);
+    neu::file::ReadTextFile("Shaders/basics.vert", vs_source);
     const char* vs_cstr = vs_source.c_str();
 
     GLuint vs;
@@ -76,7 +128,7 @@ int main(int argc, char* argv[]) {
 
     // Fragment shader
     std::string fs_source;
-    neu::file::ReadTextFile("Shaders/basic.frag", fs_source);
+    neu::file::ReadTextFile("Shaders/basics.frag", fs_source);
     const char* fs_cstr = fs_source.c_str();
 
     GLuint fs;
@@ -99,6 +151,7 @@ int main(int argc, char* argv[]) {
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
+
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success)
     {
@@ -112,11 +165,11 @@ int main(int argc, char* argv[]) {
     glUseProgram(program);
 
     // TEXTURE
-    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("Textures/beast.png");
+    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("Textures/squid.png");
 
     // Uniform
     GLint uniform = glGetUniformLocation(program, "u_time");
-    ASSERT_MSG(uniform != -1, "Could not find uniform u_time.");
+    //ASSERT_MSG(uniform != -1, "Could not find uniform u_time.");
 
 	GLint tex_uniform = glGetUniformLocation(program, "u_texture");
     glUniform1i(tex_uniform, 0);
@@ -141,36 +194,12 @@ int main(int argc, char* argv[]) {
 		// UPDATE UNIFORMS
 		glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
 
-  //      // CLEAR SCREEN
-  //      neu::vec3 bgColor{ 0, 0, 0 };
-  //      neu::GetEngine().GetRenderer().SetColor(bgColor.r, bgColor.g, bgColor.b);
-  //      neu::GetEngine().GetRenderer().Clear();
-
-		//// UPDATE SCENE
-        /*
-        float angle = neu::GetEngine().GetTime().GetTime() * 90.0f;
-        float scale = neu::math::Remap(-1.0f, 1.0f, 0.3f, 1.5f, neu::math::sin(neu::GetEngine().GetTime().GetTime()));
-        neu::vec2 mouse = neu::GetEngine().GetInput().GetMousePosition();
-        neu::vec2 position;
-        position.x = neu::math::Remap(0.0f, (float)neu::GetEngine().GetRenderer().GetWidth(), -1.0f, 1.0f, mouse.x);
-        position.y = -neu::math::Remap(0.0f, (float)neu::GetEngine().GetRenderer().GetHeight(), -1.0f, 1.0f, mouse.y);
-        */
-
-
-        // draw
-        /*neu::vec3 color{ 0, 0, 0 };
-        neu::GetEngine().GetRenderer().SetColor(color.r, color.g, color.b);
-        neu::GetEngine().GetRenderer().Clear();*/
+        neu::GetEngine().GetRenderer().Clear();
 
 		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)points.size());
+		//glDrawArrays(GL_TRIANGLES, 0, (GLsizei)points.size()); //-------------------------------------
 
-        /*glLoadIdentity();
-        glPushMatrix();
-
-        glTranslatef(position.x, position.y, 0);
-        glRotatef(angle, 0, 0, 1);
-        glScalef(scale, scale, 1);*/
+		glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
 
         // PRIMATIVE TYPES
         /*
@@ -186,40 +215,30 @@ int main(int argc, char* argv[]) {
         * GL_POLYGON
         * etc.
         */
-        /*glBegin(GL_TRIANGLES);
 
-        for (size_t i = 0; i < points.size(); ++i) {
-            glColor3f(colors[i].r, colors[i].g, colors[i].b);
-            glVertex3f(points[i].x, points[i].y, points[i].z);
-        }
-
-        glEnd();
-
-        glPopMatrix();*/
-
-        neu::GetEngine().GetRenderer().Present();
 
         //// GET TIME
         //float time = neu::GetEngine().GetTime().GetTime();
-
+        //
         //// GET MOUSE POSITION
         //neu::vec2 mousePos = neu::GetEngine().GetInput().GetMousePosition();
-
+        //
         //// Normalize mouse position
         //float tx = (mousePos.x / 800.0f) * 2.0f - 1.0f;
         //float ty = -((mousePos.y / 600.0f) * 2.0f - 1.0f); // flip Y
-
+        //
         //// Calculate rotation and scale
         //float angle = time * 50.0f; // degrees per second
         //float scale = std::sin(time) * 0.5f + 1.0f; // 0.5 to 1.5
-
+        //
         //// Apply transformations
         //glPushMatrix(); // Save current transform
-
+        //
         //glTranslatef(tx, ty, 0.0f);         // mouse translation
         //glRotatef(angle, 0.0f, 1.0f, 0.0f); // rotation around y-axis
         //glScalef(scale, scale, scale);     // scaling
 
+        neu::GetEngine().GetRenderer().Present();
         
     }
 
