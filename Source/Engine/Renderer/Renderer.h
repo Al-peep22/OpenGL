@@ -55,6 +55,8 @@ namespace neu {
 		/// </summary>
 		void Present();
 
+		//void DrawTexture(class Texture& texture, const rect& sourceRect, float x, float y, float angle, float scale = 1, bool flipH = false);
+
 		/// <summary>
 		/// Gets the width of the window/render target.
 		/// </summary>
@@ -80,6 +82,6 @@ namespace neu {
 		SDL_Window* m_window = nullptr;
 
 		// OpenGL context
-		SDL_GLContext m_context;
+		SDL_GLContext m_context{ 0 };
 	};
 }
