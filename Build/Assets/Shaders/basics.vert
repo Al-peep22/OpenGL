@@ -8,7 +8,9 @@ layout (location = 2) in vec2 a_texcoord;
 out vec3 v_color;
 out vec2 v_texcoord;
 uniform float u_time;
-uniform float u_model;
+uniform mat4 u_model;
+uniform mat4 u_view;
+uniform mat4 u_projection;
 
 void main() {
 	//gl_Position = vec4(a_position + tan(u_time), 1.0);
@@ -26,5 +28,6 @@ void main() {
 	//gl_Position = vec4(a_position * offset, 0.2); // Acrobatic effect
 	//gl_Position = vec4(position, 1.0); // Sway effect
 	//gl_Position = vec4(position - offset, 1.0); // Bounce effect
-	gl_Position = u_model * vec4(a_position, 1.0); // Still effect
+	//gl_Position = vec4(a_position, 1.0); // Still effect
+	gl_Position = u_projection * u_view * u_model * vec4(a_position, 1.0); 
 }

@@ -38,25 +38,26 @@ int main(int argc, char* argv[]) {
         { {  0.0,  0.5,  0.0}, {0, 1, 1}, {0.5, 1.0}},
         { { -0.5, -0.5, -0.5}, {1, 1, 0}, {0.0, 0.0}},
         { {  0.5, -0.5,  0.5}, {1, 0, 1}, {1.0, 0.0}},
+        { {  0.5, -0.5,  0.5}, {1, 0, 1}, {1.0, 0.0}},
     };
 
-	std::vector<GLuint> indices = { 0, 1, 2 };
+	std::vector<GLuint> indices = { 0, 1, 2, 2, 3, 0 };
 
-    // vertex buffer
+	// VERTEX BUFFER
     GLuint vbo;
     glGenBuffers(1, &vbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
-    // index buffer
+	// INDEX BUFFER
 	GLuint ibo;
 	glGenBuffers(1, &ibo);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
-    // Vertex Array
+	// VERTEX ARRAY
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -72,29 +73,28 @@ int main(int argc, char* argv[]) {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texcoord));
 
-    // shaders
+    // SHADERS
 	auto vs = neu::Resources().Get<neu::Shader>("shaders/basics.vert", GL_VERTEX_SHADER);
 	auto fs = neu::Resources().Get<neu::Shader>("shaders/basics.frag", GL_FRAGMENT_SHADER);
 
-    // model
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-
-    // program
+    // PROGRAM
     auto program = std::make_shared<neu::Program>();
     program->AttachShader(vs);
     program->AttachShader(fs);
     program->Link();
     program->Use();
 
-    //texture
+    //TEXTURE
     neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("textures/squid.png");
 
-	//uniform
-	program->SetUniform("u_texture", 0); // Kevin might need???
-	program->SetUniform("u_model", glm::value_ptr(model));
+    // TRANSFORM
+	float rotation = 0;
+	glm::vec3 eye = { 0, 0, 5 };
+
+    // PROJECTION MATRIX
+    float aspect = neu::GetEngine().GetRenderer().GetWidth() / (float)neu::GetEngine().GetRenderer().GetHeight();
+    glm::mat4 projection = glm::perspective(glm::radians(90.0f), aspect, 0.01f, 100.0f);
+    program->SetUniform("u_projection", projection);
 
     SDL_Event e;
     bool quit = false;
@@ -113,10 +113,34 @@ int main(int argc, char* argv[]) {
         // ESC CHECK
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
+		rotation += neu::GetEngine().GetTime().GetDeltaTime() * 90.0f;
+
+        // MODEL MATRIX
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+	    program->SetUniform("u_model", model);
+
+        // VIEW MATRIX
+        eye.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.01f;
+        eye.z += neu::GetEngine().GetInput().GetMouseDelta().y * 0.01f;
+        glm::mat4 view = glm::lookAt(eye, eye + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0,  1, 0 });
+	    program->SetUniform("u_view", view);
+
 		// UPDATE UNIFORMS
 		//glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
 		//program->SetUniform("u_time", neu::GetEngine().GetTime().GetTime());
 
+        /*
+        -----------------------------------------------------------------------------------------
+        -- I can't get my object to show up - Once model was added it dissapeared
+        -- Mine is still a triangle
+		-- and the colors in the background arent should - how do I make it transparent or tinted?
+        -----------------------------------------------------------------------------------------
+        */
+
+        // DRAW
         neu::GetEngine().GetRenderer().Clear();
 
 		glBindVertexArray(vao);
@@ -139,32 +163,12 @@ int main(int argc, char* argv[]) {
         * etc.
         */
 
-
-        //// GET TIME
-        //float time = neu::GetEngine().GetTime().GetTime();
-        //
-        //// GET MOUSE POSITION
-        //neu::vec2 mousePos = neu::GetEngine().GetInput().GetMousePosition();
-        //
-        //// Normalize mouse position
-        //float tx = (mousePos.x / 800.0f) * 2.0f - 1.0f;
-        //float ty = -((mousePos.y / 600.0f) * 2.0f - 1.0f); // flip Y
-        //
-        //// Calculate rotation and scale
-        //float angle = time * 50.0f; // degrees per second
-        //float scale = std::sin(time) * 0.5f + 1.0f; // 0.5 to 1.5
-        //
-        //// Apply transformations
-        //glPushMatrix(); // Save current transform
-        //
-        //glTranslatef(tx, ty, 0.0f);         // mouse translation
-        //glRotatef(angle, 0.0f, 1.0f, 0.0f); // rotation around y-axis
-        //glScalef(scale, scale, scale);     // scaling
-
+        // PRESENT
         neu::GetEngine().GetRenderer().Present();
         
     }
 
+    // SHUTDOWN
     neu::GetEngine().Shutdown();
 
     return 0;

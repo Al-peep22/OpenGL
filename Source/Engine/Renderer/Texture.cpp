@@ -30,7 +30,7 @@ namespace neu {
             return false;
         }
 
-		SDL_FlipSurface(surface, SDL_FLIP_VERTICAL); // Kevin might need???
+		SDL_FlipSurface(surface, SDL_FLIP_VERTICAL);
 
 		const SDL_PixelFormatDetails* details = SDL_GetPixelFormatDetails(surface->format);
 
@@ -40,7 +40,7 @@ namespace neu {
 
         glGenTextures(1, &m_texture);
 		glBindTexture(m_target, m_texture);
-        glActiveTexture(0); // Kevin might need??
+        glActiveTexture(0);
 
 		glTexImage2D(m_target, 0, internalFormat, surface->w, surface->h, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
 

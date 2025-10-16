@@ -1,5 +1,7 @@
 ﻿#include "Renderer/Program.h"
 #include <iostream>
+#include "Program.h"
+
 
 namespace neu {
 
@@ -75,6 +77,11 @@ namespace neu {
     void Program::SetUniform(const std::string& name, const neu::vec3& value) {
         GLint loc = GetUniformLocation(name);
         if (loc != -1) glUniform3f(loc, value.x, value.y, value.z);
+    }
+
+    void Program::SetUniform(const std::string& name, const glm::mat4& value) {
+		GLint loc = GetUniformLocation(name);
+		if (loc != -1) glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
     }
 
     // =============================

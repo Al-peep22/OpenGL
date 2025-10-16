@@ -6,6 +6,8 @@
 #include "Renderer/Shader.h" 
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"
+#include "../../glm/gtc/type_ptr.hpp"
+#include "../glm/glm.hpp"
 
 namespace neu {
 
@@ -30,6 +32,7 @@ namespace neu {
 
         void SetUniform(const std::string& name, const neu::vec2& value);
         void SetUniform(const std::string& name, const neu::vec3& value);
+		void SetUniform(const std::string& name, const glm::mat4& value);
 
     private:
         GLint GetUniformLocation(const std::string& name);
