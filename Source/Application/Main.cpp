@@ -72,59 +72,29 @@ int main(int argc, char* argv[]) {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texcoord));
 
-    /*
-    GLuint vbo[3];
-    glGenBuffers(3, vbo);
+    // shaders
+	auto vs = neu::Resources().Get<neu::Shader>("shaders/basics.vert", GL_VERTEX_SHADER);
+	auto fs = neu::Resources().Get<neu::Shader>("shaders/basics.frag", GL_FRAGMENT_SHADER);
 
-    // Vertex Buffer (position)
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(neu::vec3) * points.size(), points.data(), GL_STATIC_DRAW);
+    // model
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 
-    // Vertex Buffer (color)
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(neu::vec3) * colors.size(), colors.data(), GL_STATIC_DRAW);
-
-    // Vertex Array
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    // Position
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    // Color
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    // Color
-    glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-    */
-
-    // Create shaders using new shader class
-    auto vs = std::make_shared<neu::Shader>();
-    vs->Load("shaders/basic.vert", GL_VERTEX_SHADER);
-
-    auto fs = std::make_shared<neu::Shader>();
-    fs->Load("shaders/basic.frag", GL_FRAGMENT_SHADER);
-
-    // create and start program
+    // program
     auto program = std::make_shared<neu::Program>();
     program->AttachShader(vs);
     program->AttachShader(fs);
     program->Link();
     program->Use();
 
-    // add time to uniform
-    float timeValue = 1.5f;
-    program->SetUniform("u_time", timeValue);
-
-    //textures
+    //texture
     neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("textures/squid.png");
+
+	//uniform
+	program->SetUniform("u_texture", 0); // Kevin might need???
+	program->SetUniform("u_model", glm::value_ptr(model));
 
     SDL_Event e;
     bool quit = false;
