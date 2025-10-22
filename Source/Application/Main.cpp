@@ -90,11 +90,17 @@ int main(int argc, char* argv[]) {
     // TRANSFORM
 	float rotation = 0;
 	glm::vec3 eye = { 0, 0, 5 };
+    //neu::Transform camera{ { 0, 0, 5 } };
 
     // PROJECTION MATRIX
     float aspect = neu::GetEngine().GetRenderer().GetWidth() / (float)neu::GetEngine().GetRenderer().GetHeight();
     glm::mat4 projection = glm::perspective(glm::radians(90.0f), aspect, 0.01f, 100.0f);
     program->SetUniform("u_projection", projection);
+
+	// MODEL LOAD (Vertex buffer code replacement? ----------------------)
+    auto model3d = std::make_shared<neu::Model>();
+    model3d->Load("models/sphere.obj");
+
 
     SDL_Event e;
     bool quit = false;
@@ -121,6 +127,13 @@ int main(int argc, char* argv[]) {
         model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 	    program->SetUniform("u_model", model);
+        //float dt = neu::GetEngine().GetTime().GetDeltaTime();
+        //float speed = 10.0f;
+        //if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) camera.position.x -= speed * dt;
+        //if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_D)) camera.position.x += speed * dt;
+        //// fill in the rest of the controls (WS and QE)
+        /*glm::mat4 view = glm::lookAt(camera.position, camera.position + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });
+        program->SetUniform("u_view", view);*/
 
         // VIEW MATRIX
         eye.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.01f;
@@ -162,6 +175,14 @@ int main(int argc, char* argv[]) {
         * GL_POLYGON
         * etc.
         */
+
+
+       /* Model Stuff--------------------------------
+       neu::GetEngine().GetRenderer().Clear();
+        model3d->Draw(GL_TRIANGLES);
+        neu::GetEngine().GetRenderer().Present();
+        */
+
 
         // PRESENT
         neu::GetEngine().GetRenderer().Present();

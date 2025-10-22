@@ -2,7 +2,7 @@
 
 // a_### = attributes/inputs
 layout (location = 0) in vec3 a_position;
-layout (location = 1) in vec3 a_color;
+layout (location = 1) in vec3 a_color; // might not need anymore?
 layout (location = 2) in vec2 a_texcoord;
 
 out vec3 v_color;
