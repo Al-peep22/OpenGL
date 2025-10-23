@@ -21,15 +21,15 @@ namespace neu
 
 	protected:
 		// vertex array
-		GLuint m_vao = 0;   // vertex array object
+		GLuint m_vao = 0;  
 
 		// vertex buffer
-		GLuint m_vbo = 0;   // vertex buffer object
-		GLuint m_vertexCount = 0; // number of vertices in vertex buffer
+		GLuint m_vbo = 0;  
+		GLuint m_vertexCount = 0;
 
 		// index buffer
-		GLuint m_ibo = 0;   // index buffer object
-		GLuint m_indexCount = 0; // number of indices index buffer
-		GLenum m_indexType = 0;  // data type of index
+		GLuint m_ibo = 0; 
+		GLuint m_indexCount = 0;
+		GLenum m_indexType = 0; 
 	};
 }

@@ -56,6 +56,15 @@
     <None Include="..\..\Build\Assets\Shaders\basics.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Shaders\basics_lit.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basics_lit.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basics_lit.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Build\Assets\Textures\beast.png">

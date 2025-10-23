@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "../glm/glm.hpp"
+#include "../glm/gtc/matrix_transform.hpp"
+#include "../glm/gtc/type_ptr.hpp"
+
 #define SERIAL_READ(value, data)			neu::serial::Read(value, #data, data)
 #define SERIAL_READ_NAME(value, name, data)	neu::serial::Read(value, name, data)
 
@@ -22,7 +26,7 @@ namespace neu::serial {
 	bool Read(const value_t& value, const std::string& name, int& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, float& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, std::string& data, bool required = false);
-	bool Read(const value_t& value, const std::string& name, vec2& data, bool required = false);
-	bool Read(const value_t& value, const std::string& name, vec3& data, bool required = false);
+	bool Read(const value_t& value, const std::string& name, glm::vec2& data, bool required = false);
+	bool Read(const value_t& value, const std::string& name, glm::vec3& data, bool required = false);
 	bool Read(const value_t& value, const std::string& name, std::vector<int>& data, bool required = false);
 }

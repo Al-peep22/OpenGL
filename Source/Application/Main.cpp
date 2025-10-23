@@ -74,23 +74,27 @@ int main(int argc, char* argv[]) {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texcoord));
 
     // SHADERS
-	auto vs = neu::Resources().Get<neu::Shader>("shaders/basics.vert", GL_VERTEX_SHADER);
-	auto fs = neu::Resources().Get<neu::Shader>("shaders/basics.frag", GL_FRAGMENT_SHADER);
+	/*auto vs = neu::Resources().Get<neu::Shader>("shaders/basics_lit.vert", GL_VERTEX_SHADER);
+	auto fs = neu::Resources().Get<neu::Shader>("shaders/basics_lit.frag", GL_FRAGMENT_SHADER);*/
 
     // PROGRAM
-    auto program = std::make_shared<neu::Program>();
-    program->AttachShader(vs);
-    program->AttachShader(fs);
-    program->Link();
+    auto program = neu::Resources().Get<neu::Program>("shaders/basics_lit.prog");
     program->Use();
 
     //TEXTURE
-    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("textures/squid.png");
+    neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("textures/spot_diffuse.png");
+
+    //set light uniforms
+    program->SetUniform("u_light.color", glm::vec3(0.5f));
+    program->SetUniform("u_ambient_light", glm::vec3(0.2f));
+    neu::Transform lightTransform{ {2,4,3} };
 
     // TRANSFORM
 	float rotation = 0;
-	glm::vec3 eye = { 0, 0, 5 };
-    //neu::Transform camera{ { 0, 0, 5 } };
+	glm::vec3 eye = { 0, 0, 2 };
+
+    neu::Transform transform{ { 0, 0, 0 } };
+    neu::Transform camera{ { 0, 0, 2 } };
 
     // PROJECTION MATRIX
     float aspect = neu::GetEngine().GetRenderer().GetWidth() / (float)neu::GetEngine().GetRenderer().GetHeight();
@@ -99,7 +103,7 @@ int main(int argc, char* argv[]) {
 
 	// MODEL LOAD (Vertex buffer code replacement? ----------------------)
     auto model3d = std::make_shared<neu::Model>();
-    model3d->Load("models/sphere.obj");
+    model3d->Load("models/spot.obj");
 
 
     SDL_Event e;
@@ -115,23 +119,26 @@ int main(int argc, char* argv[]) {
 
         // UPDATE ENGINE
         neu::GetEngine().Update();
+ 
+        float dt = neu::GetEngine().GetTime().GetDeltaTime();
 
         // ESC CHECK
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
-		rotation += neu::GetEngine().GetTime().GetDeltaTime() * 90.0f;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_R)) transform.rotation.y += 90.0f * dt;
+        program->SetUniform("u_model", transform.GetMatrix());
 
         // MODEL MATRIX
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-	    program->SetUniform("u_model", model);
-        //float dt = neu::GetEngine().GetTime().GetDeltaTime();
-        //float speed = 10.0f;
-        //if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) camera.position.x -= speed * dt;
-        //if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_D)) camera.position.x += speed * dt;
-        //// fill in the rest of the controls (WS and QE)
+     //   glm::mat4 model = glm::mat4(1.0f);
+     //   model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+     //   model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+     //   model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+	    //program->SetUniform("u_model", model);
+
+        float speed = 10.0f;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) camera.position.x -= speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_D)) camera.position.x += speed * dt;
+        // fill in the rest of the controls (WS and QE)
         /*glm::mat4 view = glm::lookAt(camera.position, camera.position + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });
         program->SetUniform("u_view", view);*/
 
@@ -141,25 +148,20 @@ int main(int argc, char* argv[]) {
         glm::mat4 view = glm::lookAt(eye, eye + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0,  1, 0 });
 	    program->SetUniform("u_view", view);
 
+        program->SetUniform("u_light.position", (glm::vec3)(view* glm::vec4(lightTransform.position,1)));
+
+
 		// UPDATE UNIFORMS
 		//glUniform1f(uniform, neu::GetEngine().GetTime().GetTime());
 		//program->SetUniform("u_time", neu::GetEngine().GetTime().GetTime());
 
-        /*
-        -----------------------------------------------------------------------------------------
-        -- I can't get my object to show up - Once model was added it dissapeared
-        -- Mine is still a triangle
-		-- and the colors in the background arent should - how do I make it transparent or tinted?
-        -----------------------------------------------------------------------------------------
-        */
-
         // DRAW
         neu::GetEngine().GetRenderer().Clear();
 
-		glBindVertexArray(vao);
+		//glBindVertexArray(vao);
 		//glDrawArrays(GL_TRIANGLES, 0, (GLsizei)points.size()); //-------------------------------------
 
-		glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
 
         // PRIMATIVE TYPES
         /*
@@ -177,11 +179,9 @@ int main(int argc, char* argv[]) {
         */
 
 
-       /* Model Stuff--------------------------------
-       neu::GetEngine().GetRenderer().Clear();
+        //Model Stuff--------------------------------
         model3d->Draw(GL_TRIANGLES);
-        neu::GetEngine().GetRenderer().Present();
-        */
+        
 
 
         // PRESENT
