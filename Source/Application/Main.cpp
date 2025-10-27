@@ -125,7 +125,8 @@ int main(int argc, char* argv[]) {
         // ESC CHECK
         if (neu::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_ESCAPE)) quit = true;
 
-        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_R)) transform.rotation.y += 90.0f * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_E)) transform.rotation.y += 90.0f * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_Q)) transform.rotation.y -= 90.0f * dt;
         program->SetUniform("u_model", transform.GetMatrix());
 
         // MODEL MATRIX
@@ -137,13 +138,21 @@ int main(int argc, char* argv[]) {
 
         float speed = 10.0f;
         if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) camera.position.x -= speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) eye.x -= speed * dt;
         if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_D)) camera.position.x += speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_D)) eye.x += speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_W)) camera.position.y += speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_W)) eye.y += speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_S)) camera.position.y -= speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_S)) eye.y -= speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_I)) eye.z -= speed * dt;
+        if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_O)) eye.z += speed * dt;
         // fill in the rest of the controls (WS and QE)
         /*glm::mat4 view = glm::lookAt(camera.position, camera.position + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0, 1, 0 });
         program->SetUniform("u_view", view);*/
 
         // VIEW MATRIX
-        eye.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.01f;
+        //eye.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.01f;
         eye.z += neu::GetEngine().GetInput().GetMouseDelta().y * 0.01f;
         glm::mat4 view = glm::lookAt(eye, eye + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0,  1, 0 });
 	    program->SetUniform("u_view", view);
@@ -157,6 +166,16 @@ int main(int argc, char* argv[]) {
 
         // DRAW
         neu::GetEngine().GetRenderer().Clear();
+
+        // start new ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplSDL3_NewFrame();
+        ImGui::NewFrame();
+        // set ImGui
+        ImGui::Begin("Editor");
+        ImGui::Text("Hello World");
+        ImGui::Text("Press 'Esc' to quit.");
+        ImGui::End();
 
 		//glBindVertexArray(vao);
 		//glDrawArrays(GL_TRIANGLES, 0, (GLsizei)points.size()); //-------------------------------------
@@ -182,7 +201,9 @@ int main(int argc, char* argv[]) {
         //Model Stuff--------------------------------
         model3d->Draw(GL_TRIANGLES);
         
-
+        // draw ImGui
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         // PRESENT
         neu::GetEngine().GetRenderer().Present();
