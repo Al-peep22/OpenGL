@@ -71,6 +71,15 @@
     <None Include="..\..\Build\Assets\Scenes\scene01.json">
       <Filter>Assets\Scenes</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Shaders\basics_phong.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basics_phong.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basics_phong.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Build\Assets\Textures\beast.png">

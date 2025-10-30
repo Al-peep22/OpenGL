@@ -5,39 +5,23 @@ layout (location = 0) in vec3 a_position;
 layout (location = 1) in vec2 a_texcoord;
 layout (location = 2) in vec3 a_normal;
 
-out vec3 v_color;
 out vec2 v_texcoord;
+out vec3 v_position;
+out vec3 v_normal;
 
+struct Material{
+	sampler2D baseMap;
+	vec3 baseColor;
+	float shininess;
+	vec2 tiling;
+	vec2 offset;
+};
+
+uniform Material u_material;
 uniform float u_time;
 uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
-
-uniform vec3 u_ambient_light;
-
-uniform struct light{
-	vec3 position;
-	vec3 color;
-} u_light;
-
-vec3 calculateLight(in vec3 position, in vec3 normal){
-	//direction from surface to light
-	vec3 light_dir = normalize(u_light.position - position);
-
-	//difusse lighting (lambertian)
-	float intensity = max(dot(normal,light_dir),0);
-	vec3 diffuse = u_light.color * intensity;
-
-	// specular
-	vec3 reflection = reflect(-light_dir, normal);
-	vec3 view_dir = normalize(-position);
-	intensity = max(dot(reflection,view_dir),0);
-	intensity = pow(intensity, 128);
-	vec3 specular = vec3(intensity);
-
-	//final light (ambiant * diffuse)
-	return u_ambient_light + diffuse + specular;
-}
 
 void main() {
 	v_texcoord = a_texcoord;
@@ -53,7 +37,6 @@ void main() {
 	float offset = sin(u_time * frequency + position.y) * amplitude;
 	position.x += offset;
 
-	v_color = calculateLight(position, normal);
 	//gl_Position = vec4(a_position * offset, 0.2); // Acrobatic effect
 	//gl_Position = vec4(position, 1.0); // Sway effect
 	//gl_Position = vec4(position - offset, 1.0); // Bounce effect

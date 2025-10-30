@@ -214,6 +214,9 @@
     <None Include="..\..\Build\Assets\Shaders\basics_lit.vert" />
     <None Include="..\..\Build\Assets\Shaders\basics.frag" />
     <None Include="..\..\Build\Assets\Shaders\basics.vert" />
+    <None Include="..\..\Build\Assets\Shaders\basics_phong.frag" />
+    <None Include="..\..\Build\Assets\Shaders\basics_phong.prog" />
+    <None Include="..\..\Build\Assets\Shaders\basics_phong.vert" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
