@@ -153,7 +153,7 @@ int main(int argc, char* argv[]) {
 
         // VIEW MATRIX
         //eye.x += neu::GetEngine().GetInput().GetMouseDelta().x * 0.01f;
-        eye.z += neu::GetEngine().GetInput().GetMouseDelta().y * 0.01f;
+        //eye.z += neu::GetEngine().GetInput().GetMouseDelta().y * 0.01f;
         glm::mat4 view = glm::lookAt(eye, eye + glm::vec3{ 0, 0, -1 }, glm::vec3{ 0,  1, 0 });
 	    program->SetUniform("u_view", view);
 
