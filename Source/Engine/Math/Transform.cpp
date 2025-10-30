@@ -59,4 +59,7 @@ namespace neu {
         // Scale of 1.0 maintains the object's original dimensions
         SERIAL_READ(value, scale);
     }
+    void Transform::UpdateGui()
+    {
+    }
 }

@@ -7,6 +7,17 @@ layout (location = 2) in vec3 a_normal;
 
 out vec3 v_color;
 out vec2 v_texcoord;
+out vec3 v_normal;
+
+struct Material{
+	sampler2D baseMap;
+	vec3 baseColor;
+	float shininess;
+	vec2 tiling;
+	vec2 offset;
+};
+
+uniform Material u_material;
 uniform float u_time;
 uniform mat4 u_model;
 uniform mat4 u_view;

@@ -2,11 +2,27 @@
 
 in vec3 v_color;
 in vec2 v_texcoord;
+in vec2 v_normal;
 
 out vec4 f_color;
 
+struct light{
+	vec3 position;
+	vec3 color;
+};
+
+struct Material{
+	sampler2D baseMap;
+	vec3 baseColor;
+	float shininess;
+	vec2 tiling;
+	vec2 offset;
+};
+
 uniform float u_time;
 uniform sampler2D u_texture;
+uniform Material u_material;
+uniform vec3 u_ambient_light;
 
 void main() {
 	//f_color = vec4(0, 1, 1, 1);

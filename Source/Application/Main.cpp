@@ -81,6 +81,10 @@ int main(int argc, char* argv[]) {
     auto program = neu::Resources().Get<neu::Program>("shaders/basics_lit.prog");
     program->Use();
 
+    // SCENE
+    auto scene = std::make_unique<neu::Scene>();
+    scene->Load("scenes/scene01.json");
+
     //TEXTURE
     neu::res_t<neu::Texture> texture = neu::Resources().Get<neu::Texture>("textures/spot_diffuse.png");
 
@@ -129,6 +133,10 @@ int main(int argc, char* argv[]) {
         if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_Q)) transform.rotation.y -= 90.0f * dt;
         program->SetUniform("u_model", transform.GetMatrix());
 
+        // UPDATE SCENE
+        scene->Update(dt);
+
+
         // MODEL MATRIX
      //   glm::mat4 model = glm::mat4(1.0f);
      //   model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
@@ -136,6 +144,7 @@ int main(int argc, char* argv[]) {
      //   model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 	    //program->SetUniform("u_model", model);
 
+        // CAMERA CONTROLS
         float speed = 10.0f;
         if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) camera.position.x -= speed * dt;
         if (neu::GetEngine().GetInput().GetKeyDown(SDL_SCANCODE_A)) eye.x -= speed * dt;
