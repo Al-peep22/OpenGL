@@ -31,11 +31,8 @@ void main() {
 
 	//vec3 position = a_position;
 	mat4 model_view = u_view * u_model;
-	vec3 position = vec3(model_view * vec4(a_position, 1.0));
-	vec3 normal = normalize(mat3(model_view) * a_normal);
-
-	float offset = sin(u_time * frequency + position.y) * amplitude;
-	position.x += offset;
+	v_position = vec3(model_view * vec4(a_position, 1.0));
+	v_normal = normalize(mat3(model_view) * a_normal);
 
 	//gl_Position = vec4(a_position * offset, 0.2); // Acrobatic effect
 	//gl_Position = vec4(position, 1.0); // Sway effect

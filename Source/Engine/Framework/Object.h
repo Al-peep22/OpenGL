@@ -37,7 +37,9 @@
 /// - Use this macro for classes that need prototype/cloning functionality
 /// </summary>
 /// <param name="classname">The name of the derived class implementing Clone()</param>
-#define CLASS_PROTOTYPE(classname) virtual std::unique_ptr<Object> Clone() { return std::make_unique<classname>(*this); }
+#define CLASS_PROTOTYPE(classname) \
+virtual std::unique_ptr<Object> Clone() { return std::make_unique<classname>(*this); } \
+const char* GetClassName() { return #classname;} 
 
 namespace neu {
     /// <summary>

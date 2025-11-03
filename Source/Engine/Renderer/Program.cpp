@@ -135,7 +135,7 @@ namespace neu {
         if (it == m_uniformLocations.end()) {
             GLint location = glGetUniformLocation(m_program, name.c_str());
             if (location == -1) {
-                std::cerr << "⚠️ Warning: Uniform not found: " << name << std::endl;
+                std::cerr << "Warning: Uniform not found: " << name << std::endl;
             }
             m_uniformLocations[name] = location;
         }
