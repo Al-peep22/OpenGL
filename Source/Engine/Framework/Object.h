@@ -4,6 +4,7 @@
 #pragma once
 #include "Core/Serializable.h"
 #include <string>
+#include "GUI/GUI.h"
 
 /// <summary>
 /// Convenience macro for implementing the Clone() method in derived classes.
@@ -77,7 +78,7 @@ namespace neu {
     /// }
     /// ```
     /// </summary>
-    class Object : public ISerializable {
+    class Object : public ISerializable, public GUI {
     public:
         /// <summary>
         /// Human-readable identifier for the object.
@@ -303,6 +304,8 @@ namespace neu {
         /// </summary>
         /// <returns>A unique_ptr to a new Object instance that is a deep copy of this object</returns>
         virtual std::unique_ptr<Object> Clone() = 0;
+
+        virtual const char* GetClassName() = 0;
 
         /// <summary>
         /// Deserializes object state from serialized data.

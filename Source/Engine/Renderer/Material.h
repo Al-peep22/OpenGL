@@ -3,7 +3,7 @@
 #include "../glm/glm.hpp"         
 #include "../glm/gtc/type_ptr.hpp"
 #include "Resources/Resource.h"
-#include "GUI.h"
+#include "GUI/GUI.h"
 
 namespace neu {
 	class Shader;

@@ -23,6 +23,9 @@
     <Filter Include="Assets\Scenes">
       <UniqueIdentifier>{b685779e-73d9-451c-bceb-365f676c4c87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Material">
+      <UniqueIdentifier>{80095fb4-e8c7-456a-8d0d-d3806b2c50fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -53,32 +56,44 @@
     <None Include="..\..\Build\Assets\Platformer\Tilemaps\tilemap.json">
       <Filter>Assets\Platformer</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basics.frag">
+    <None Include="..\..\Build\Assets\Scenes\scene01.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basics.vert">
+    <None Include="..\..\Build\Assets\Shaders\basic.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basics_lit.frag">
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basics_lit.vert">
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_lit.vert">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.frag">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.prog">
+      <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Shaders\basic_phong.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
     <None Include="..\..\Build\Assets\Shaders\basics_lit.prog">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Scenes\scene01.json">
-      <Filter>Assets\Scenes</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\basics_phong.frag">
-      <Filter>Assets\Shaders</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\basics_phong.vert">
-      <Filter>Assets\Shaders</Filter>
-    </None>
     <None Include="..\..\Build\Assets\Shaders\basics_phong.prog">
       <Filter>Assets\Shaders</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\spot.mat">
+      <Filter>Assets\Material</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\halloween.mat">
+      <Filter>Assets\Material</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

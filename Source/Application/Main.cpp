@@ -1,3 +1,4 @@
+#include <GUI/Editor.h>
 
 int main(int argc, char* argv[]) {
     // SET DIRECTORY
@@ -14,6 +15,9 @@ int main(int argc, char* argv[]) {
     // INITIALIZE SCENE
     auto scene = std::make_unique<neu::Scene>();
     scene->Load("scenes/scene01.json");
+    scene->Start();
+
+    auto editor = std::make_unique<neu::Editor>();
     
     // MAIN LOOP
     while (!quit) {
@@ -33,6 +37,10 @@ int main(int argc, char* argv[]) {
                 
         // UPDATE SCENE
         scene->Update(dt);
+
+        // UPDATE EDITOR
+        editor->Begin();
+        editor->UpdateGui(*scene);
         
         // ROTATION CHECK
         /*
@@ -57,16 +65,6 @@ int main(int argc, char* argv[]) {
         
         // DRAW
         neu::GetEngine().GetRenderer().Clear();
-
-        // NEW IMGUI FRAME
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplSDL3_NewFrame();
-        ImGui::NewFrame();
-
-        // SET IMGUI
-        ImGui::Begin("Editor");
-        ImGui::End();
-
 
         // PRIMATIVE TYPES
         /*

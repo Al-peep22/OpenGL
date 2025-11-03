@@ -16,7 +16,7 @@ namespace neu {
 
 		//texture
 		std::string textureName;
-		SERIAL_READ_NAME(document, "texture", textureName);
+		SERIAL_READ_NAME(document, "baseMap", textureName);
 		baseMap = Resources().Get<Texture>(textureName);
 
 
