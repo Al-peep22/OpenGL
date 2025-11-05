@@ -1,0 +1,90 @@
+{
+    "actors": [
+        {
+            "name": "balli",
+            "persistent": true,
+            "transform": {
+                "position": [ 0, 0, 0 ],
+                "rotation": [ 0, 180, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "ModelRenderer",
+                    "model": "models/spot.obj",
+                    "material": "materials/spot.mat"
+                }
+            ]
+        },
+        {
+            "name": "camera",
+            "persistent": true,
+            "transform": {
+                "position": [ 0, 0, 5 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "CameraComponent"
+                },
+                {
+                    "type": "FirstPersonController",
+                    "speed": 5,
+                    "sensitivity": 0.2
+                }
+            ]
+        },
+        {
+            "name": "light1",
+            "persistent": true,
+            "transform": {
+                "position": [ 5, 5, 0 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "LightComponent",
+                    "color": [ 1, 1, 0 ],
+                    "intensity": 1.5,
+                    "range": 20
+                }
+            ]
+        },
+        {
+            "name": "light2",
+            "persistent": true,
+            "transform": {
+                "position": [ -5, 5, 0 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "LightComponent",
+                    "color": [ 1, 1, 0 ],
+                    "intensity": 1.5,
+                    "range": 20
+                }
+            ]
+        },
+        {
+            "name": "ligh3",
+            "persistent": true,
+            "transform": {
+                "position": [ -5, -5, 0 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "LightComponent",
+                    "color": [ 1, 1, 0 ],
+                    "intensity": 1.5,
+                    "range": 20
+                }
+            ]
+        }
+    ]
+}

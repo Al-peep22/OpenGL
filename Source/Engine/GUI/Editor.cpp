@@ -33,6 +33,7 @@ namespace neu {
 		}
 		ImGui::End();
 
+		// INSPECTOR
 		ImGui::Begin("Inspector");
 		if (m_selected) {
 			m_selected->UpdateGui();

@@ -95,6 +95,9 @@
     <None Include="..\..\Build\Assets\Materials\halloween.mat">
       <Filter>Assets\Material</Filter>
     </None>
+    <None Include="..\..\Build\Assets\Scenes\scene02.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Build\Assets\Textures\beast.png">
