@@ -36,6 +36,26 @@
             ]
         },
         {
+            "name": "sun",
+            "persistent": true,
+            "transform": {
+                "position": [ 0, 10, 0 ],
+                "rotation": [ 90, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "LightComponent",
+                    "color": [ 1, 1, 0 ],
+                    "intensity": 2,
+                    "range": 20,
+                    "lightType": "Point",
+                    "innerSpotAngle":  15,
+                    "outerSpotAngle":  30
+                }
+            ]
+        },
+        {
             "name": "light1",
             "persistent": true,
             "transform": {
@@ -46,7 +66,7 @@
             "components": [
                 {
                     "type": "LightComponent",
-                    "color": [ 1, 1, 0 ],
+                    "color": [ 0, 1, 0 ],
                     "intensity": 1.5,
                     "range": 20
                 }
@@ -63,7 +83,7 @@
             "components": [
                 {
                     "type": "LightComponent",
-                    "color": [ 1, 1, 0 ],
+                    "color": [ 0, 1, 1 ],
                     "intensity": 1.5,
                     "range": 20
                 }
@@ -80,7 +100,7 @@
             "components": [
                 {
                     "type": "LightComponent",
-                    "color": [ 1, 1, 0 ],
+                    "color": [ 1, 0, 1 ],
                     "intensity": 1.5,
                     "range": 20
                 }

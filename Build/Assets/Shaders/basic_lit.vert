@@ -1,5 +1,10 @@
 #version 460 core
- 
+
+#define MX_LIGHTS   5
+#define POINT       0
+#define DIRECTIONAL 1
+#define SPOT        2
+
 layout (location = 0) in vec3 a_position;
 layout (location = 1) in vec2 a_texcoord;
 layout (location = 2) in vec3 a_normal;
@@ -24,10 +29,14 @@ float calculateAttenuation(float light_distance, float range)
 }
  
 struct Light {
+    int type;
     vec3 position;
+    vec3 direction;
     vec3 color;
     float intensity;
     float range;
+    float innerSpotAngle;
+    float outerSpotAngle;
 };
  
 struct Material {
@@ -44,7 +53,41 @@ uniform Material u_material;
  
 vec3 calculateLight(in Light light, in vec3 position, in vec3 normal)
 {
-    vec3 light_dir = normalize(light.position - position);
+    float attenuation = 1.0;
+    vec3 light_dir;
+    switch(light.type){
+
+        case POINT:
+        {
+            light_dir = normalize(light.position - position);
+
+            float light_distance = length(light.position - position);
+            float attenuation = calculateAttenuation(light_distance, light.range);
+        }
+        break;
+
+        case DIRECTIONAL:
+        {
+            light_dir = light.direction;
+        }
+        break;
+
+        case SPOT:
+        {
+            light_dir = normalize(light.position - position);
+
+            float light_distance = length(light.position - position);
+            float attenuation = calculateAttenuation(light_distance, light.range);
+
+            float angle = acos(dot(light_dir, light.direction));
+            if(angle > light.outerSpotAngle) attenuation = 0.0;
+            else{
+                float spotAttenuation = smoothstep(light.outerSpotAngle, light.innerSpotAngle, angle);
+                attenuation *= spotAttenuation;
+            }
+        }
+        break;
+}
  
     float diff = max(dot(normal, light_dir), 0.0);
     vec3 diffuse = light.color * diff * u_material.baseColor;
@@ -54,8 +97,6 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal)
     float spec = pow(max(dot(reflection, view_dir), 0.0), u_material.shininess);
     vec3 specular = vec3(spec);
  
-    float light_distance = length(light.position - position);
-    float attenuation = calculateAttenuation(light_distance, light.range);
  
     return (diffuse + specular) * light.intensity * attenuation;
 }
