@@ -69,7 +69,7 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal, in float s
             light_dir = normalize(light.position - position);
 
             float light_distance = length(light.position - position);
-            float attenuation = calculateAttenuation(light_distance, light.range);
+            attenuation = calculateAttenuation(light_distance, light.range);
         }
         break;
 
@@ -85,7 +85,7 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal, in float s
 			light_dir = normalize(light.position - position);
 
 			float light_distance = length(light.position - position);
-            float attenuation = calculateAttenuation(light_distance, light.range);
+            attenuation = calculateAttenuation(light_distance, light.range);
 
 			float angle = acos(dot(light_dir, light.direction));
 			if(angle > light.outerSpotAngle) {
@@ -107,7 +107,7 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal, in float s
 	intensity = pow(intensity, u_material.shininess);
 	vec3 specular = vec3(intensity) * specularMask;
 
-	return diffuse + specular;
+	return (diffuse + specular) * light.intensity * attenuation;
 }
 void main() {
 	float specularMask = ((u_material.parameters & SPECULAR_MAP) != 0u)
