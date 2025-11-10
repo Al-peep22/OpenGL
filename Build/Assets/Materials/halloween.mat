@@ -1,5 +1,5 @@
 {
-	"program": "shaders/basic_phong.prog",
+	"program": "shaders/lit_vertex.prog",
 	"baseMap": "textures/HalloweenTex.png",
 	"baseColor": [ 1, 1, 1 ],
 	"shininess": 128,

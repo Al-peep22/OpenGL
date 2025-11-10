@@ -85,6 +85,7 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal)
                 float spotAttenuation = smoothstep(light.outerSpotAngle, light.innerSpotAngle, angle);
                 attenuation *= spotAttenuation;
             }
+            //attenuation = 0;
         }
         break;
 }

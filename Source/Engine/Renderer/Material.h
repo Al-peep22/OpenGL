@@ -11,6 +11,13 @@ namespace neu {
 
 	class Material : public Resource, GUI {
 	public:
+		enum class Parameter : uint32_t {
+			None		= 0,
+			BaseMap		= (1 << 0),
+			SpecularMap	= (1 << 1),
+			EmissiveMap = (1 << 2)
+		};
+	public:
 		Material() = default;
 		~Material() = default;
 
@@ -19,14 +26,19 @@ namespace neu {
 		void UpdateGui() override;
 
 	public:
-		float shininess{ 2 };
-		glm::vec2 tiling{ 1,1 };
-		glm::vec2 offset{ 0,0 };
 
 		res_t<Program> program;
 		res_t<Texture> baseMap;
 		glm::vec3 baseColor{ 1,1,1 };
-		res_t<Texture> specularMap;
 
+		res_t<Texture> specularMap;
+		res_t<Texture> emissiveMap;
+		glm::vec3 emissiveColor{ 0,0,0 };
+
+		float shininess{ 2 };
+		glm::vec2 tiling{ 1,1 };
+		glm::vec2 offset{ 0,0 };
+
+		Parameter parameters;
 	};
 }

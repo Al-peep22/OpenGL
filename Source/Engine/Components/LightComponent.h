@@ -22,6 +22,7 @@ namespace neu {
 		glm::vec3 color{ 1, 1, 1 };
 		float intensity{ 1 };
 		float range{ 20 };
+
 		LightType lightType = LightType::Point;
 		float innerSpotAngle = 20.0f;
 		float outerSpotAngle = 20.0f;

@@ -51,9 +51,7 @@ namespace neu {
         glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glActiveTexture(GL_TEXTURE0);
-
-		SDL_DestroySurface(surface);
+        SDL_DestroySurface(surface);
 
         return true;
     } 

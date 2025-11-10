@@ -65,28 +65,22 @@
     <None Include="..\..\Build\Assets\Shaders\basic.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_lit.frag">
+    <None Include="..\..\Build\Assets\Shaders\lit_vertex.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_lit.prog">
+    <None Include="..\..\Build\Assets\Shaders\lit_vertex.prog">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_lit.vert">
+    <None Include="..\..\Build\Assets\Shaders\lit_vertex.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_phong.frag">
+    <None Include="..\..\Build\Assets\Shaders\lit_phong.frag">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_phong.prog">
+    <None Include="..\..\Build\Assets\Shaders\lit_phong.prog">
       <Filter>Assets\Shaders</Filter>
     </None>
-    <None Include="..\..\Build\Assets\Shaders\basic_phong.vert">
-      <Filter>Assets\Shaders</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\basics_lit.prog">
-      <Filter>Assets\Shaders</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\Shaders\basics_phong.prog">
+    <None Include="..\..\Build\Assets\Shaders\lit_phong.vert">
       <Filter>Assets\Shaders</Filter>
     </None>
     <None Include="..\..\Build\Assets\Materials\spot.mat">
@@ -97,6 +91,15 @@
     </None>
     <None Include="..\..\Build\Assets\Scenes\scene02.json">
       <Filter>Assets\Scenes</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\crate.mat">
+      <Filter>Assets\Material</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Scenes\scene03.json">
+      <Filter>Assets\Scenes</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Materials\squid.mat">
+      <Filter>Assets\Material</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

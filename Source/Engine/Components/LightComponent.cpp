@@ -16,7 +16,7 @@ namespace neu {
 		program.SetUniform(name + ".color", color);
 		program.SetUniform(name + ".intensity", intensity);
 		program.SetUniform(name + ".range", range);
-		program.SetUniform(name + ".innerSpotAngle", glm::radians(outerSpotAngle));
+		program.SetUniform(name + ".innerSpotAngle", glm::radians(innerSpotAngle));
 		program.SetUniform(name + ".outerSpotAngle", glm::radians(outerSpotAngle));
 	}
 	void LightComponent::Read(const serial_data_t& value)
@@ -37,8 +37,10 @@ namespace neu {
 	{
 		const char* types[] = { "Point","Directional","Spot" };
 		ImGui::Combo("Type", (int*) & lightType, types, 3);
+
 		ImGui::ColorEdit3("Color", glm::value_ptr(color));
 		ImGui::DragFloat("Intensity", &intensity, 0.1f, 0.0f);
+
 		if (lightType != LightType::Directional) {
 			ImGui::DragFloat("Range", &range, 0.1f, 0.0f);
 		}

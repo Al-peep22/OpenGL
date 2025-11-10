@@ -19,12 +19,16 @@ namespace neu {
 		SERIAL_READ_NAME(document, "baseMap", textureName);
 		baseMap = Resources().Get<Texture>(textureName);
 
-
 		textureName = "";
 		SERIAL_READ_NAME(document, "specularMap", textureName);
 		if (!textureName.empty()) specularMap = Resources().Get<Texture>(textureName);
 
+		textureName = "";
+		SERIAL_READ_NAME(document, "emissiveMap", textureName);
+		if (!textureName.empty()) emissiveMap = Resources().Get<Texture>(textureName);
+
 		SERIAL_READ(document, baseColor);
+		SERIAL_READ(document, emissiveColor);
 		SERIAL_READ(document, shininess);
 		SERIAL_READ(document, tiling);
 		SERIAL_READ(document, offset);
@@ -33,21 +37,36 @@ namespace neu {
 	}
 
 	void Material::Bind() {
+		parameters = Parameter::None;
+
 		program->Use();
 		if (baseMap) {
 			baseMap->SetActive(GL_TEXTURE0);
 			baseMap->Bind();
+			program->SetUniform("u_baseMap", 0);
+			parameters = (Parameter)((uint32_t)parameters | (uint32_t)Parameter::BaseMap);
 		}
 
 		if (specularMap) {
 			specularMap->SetActive(GL_TEXTURE1);
 			specularMap->Bind();
+			program->SetUniform("u_specularMap", 1);
+			parameters = (Parameter)((uint32_t)parameters | (uint32_t)Parameter::SpecularMap);
+		}
+		
+		if (emissiveMap) {
+			emissiveMap->SetActive(GL_TEXTURE2);
+			emissiveMap->Bind();
+			program->SetUniform("u_emissiveMap", 2);
+			parameters = (Parameter)((uint32_t)parameters | (uint32_t)Parameter::EmissiveMap);
 		}
 
 		program->SetUniform("u_material.baseColor", baseColor);
+		program->SetUniform("u_material.emissiveColor", emissiveColor);
 		program->SetUniform("u_material.shininess", shininess);
 		program->SetUniform("u_material.tiling", tiling);
 		program->SetUniform("u_material.offset", offset);
+		program->SetUniform("u_material.parameters", (uint32_t)parameters);
 	}
 
 	void Material::UpdateGui() {
