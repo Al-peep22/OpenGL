@@ -103,8 +103,10 @@ vec3 calculateLight(in Light light, in vec3 position, in vec3 normal, in float s
     // specular
 	vec3 reflection = reflect(-light_dir, normal);
 	vec3 view_dir = normalize(-position);
+
 	intensity = max(dot(reflection,view_dir), 0);
 	intensity = pow(intensity, u_material.shininess);
+
 	vec3 specular = vec3(intensity) * specularMask;
 
 	return (diffuse + specular) * light.intensity * attenuation;

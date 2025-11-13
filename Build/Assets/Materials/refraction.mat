@@ -1,0 +1,8 @@
+{
+
+	"program": "shaders/refraction.prog",
+
+	"cubeMap": "textures/forestStairs/posx.jpg textures/forestStairs/negx.jpg textures/forestStairs/posy.jpg textures/forestStairs/negy.jpg textures/forestStairs/posz.jpg textures/forestStairs/negz.jpg"
+
+}
+ 

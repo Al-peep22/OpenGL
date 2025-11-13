@@ -41,10 +41,10 @@ namespace neu {
 
 		//SDL_Texture* m_texture{nullptr};
 		GLuint m_texture = 0;
+		GLenum m_target = GL_TEXTURE_2D;
 	private:
 		// Pointer to the underlying SDL texture object stored in GPU memory
 		// Initialized to nullptr and managed throughout the texture's lifetime
-		GLenum m_target = GL_TEXTURE_2D;
 
 		// The dimensions of the texture in pixels
 		vec2 m_size{ 0, 0 };

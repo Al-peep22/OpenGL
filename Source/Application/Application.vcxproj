@@ -205,6 +205,10 @@
   <ItemGroup>
     <None Include="..\..\Build\Assets\Materials\crate.mat" />
     <None Include="..\..\Build\Assets\Materials\halloween.mat" />
+    <None Include="..\..\Build\Assets\Materials\ore.mat" />
+    <None Include="..\..\Build\Assets\Materials\reflection.mat" />
+    <None Include="..\..\Build\Assets\Materials\refraction.mat" />
+    <None Include="..\..\Build\Assets\Materials\skybox.mat" />
     <None Include="..\..\Build\Assets\Materials\spot.mat" />
     <None Include="..\..\Build\Assets\Materials\squid.mat" />
     <None Include="..\..\Build\Assets\Meshes\enemy.msh" />
@@ -223,6 +227,15 @@
     <None Include="..\..\Build\Assets\Shaders\lit_phong.frag" />
     <None Include="..\..\Build\Assets\Shaders\lit_phong.prog" />
     <None Include="..\..\Build\Assets\Shaders\lit_phong.vert" />
+    <None Include="..\..\Build\Assets\Shaders\reflection.frag" />
+    <None Include="..\..\Build\Assets\Shaders\reflection.prog" />
+    <None Include="..\..\Build\Assets\Shaders\reflection.vert" />
+    <None Include="..\..\Build\Assets\Shaders\refraction.frag" />
+    <None Include="..\..\Build\Assets\Shaders\refraction.prog" />
+    <None Include="..\..\Build\Assets\Shaders\refraction.vert" />
+    <None Include="..\..\Build\Assets\Shaders\cubemap.frag" />
+    <None Include="..\..\Build\Assets\Shaders\skybox.prog" />
+    <None Include="..\..\Build\Assets\Shaders\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

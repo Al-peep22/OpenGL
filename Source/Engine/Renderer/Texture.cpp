@@ -38,6 +38,9 @@ namespace neu {
         GLenum internalFormat = (channels == 4) ? GL_RGBA8 : GL_RGB8;
         GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
 
+        //size.x = (float) surface->w;
+        //size.y = (float) surface->h;
+
         glGenTextures(1, &m_texture);
 		glBindTexture(m_target, m_texture);
         glActiveTexture(0);
