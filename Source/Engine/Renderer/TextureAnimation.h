@@ -14,6 +14,8 @@ namespace neu {
 		TextureAnimation() = default;
 		~TextureAnimation() = default;
 
+		void UpdateGui() override {};
+
 		/// <summary>
 		/// Loads animation data from a JSON file and the associated sprite sheet texture.
 		/// The JSON file should contain: texture_name, columns, rows, start_frame, 

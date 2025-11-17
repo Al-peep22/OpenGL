@@ -36,6 +36,8 @@ namespace neu {
 		/// <returns>A vec2 containing the width and height of the texture</returns>
 		vec2 GetSize() { return m_size;  }
 
+		void UpdateGui() override {};
+
 		// Allow Renderer class to access the texture for drawing operations
 		friend class Renderer;
 

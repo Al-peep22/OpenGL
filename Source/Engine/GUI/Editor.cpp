@@ -42,4 +42,8 @@ namespace neu {
 
 		ImGui::PopStyleColor();
 	}
+	void Editor::ShowTexture(const Texture& texture, float width, float height)
+	{
+		ImGui::Image((ImTextureID)texture.m_texture, ImVec2(width, height));
+	}
 }

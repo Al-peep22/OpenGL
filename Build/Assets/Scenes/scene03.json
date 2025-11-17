@@ -30,7 +30,7 @@
                 {
                     "type": "ModelRenderer",
                     "model": "models/spot.obj",
-                    "material": "materials/refraction.mat"
+                    "material": "materials/reflection.mat"
                 },
                 {
                     "type": "RotationComponent",
