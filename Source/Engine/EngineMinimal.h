@@ -44,6 +44,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture.h"
 #include "Renderer/TextureAnimation.h"
+#include "Renderer/RenderTexture.h"
 #include "Renderer/CubeMap.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Program.h"

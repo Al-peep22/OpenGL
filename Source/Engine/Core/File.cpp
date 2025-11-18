@@ -46,6 +46,11 @@ namespace neu::file {
         return p.extension().string();
     }
 
+    std::string GetRelativePath(const std::string& path)
+    {
+        return std::filesystem::relative(path).string();
+    }
+
     /// <summary>
     /// Extracts the filename from a given file path.
     /// Returns the final component of the path, including the file extension.

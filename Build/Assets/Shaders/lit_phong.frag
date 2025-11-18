@@ -144,5 +144,6 @@ void main()
         ? texture(u_emissiveMap, fs_in.v_texcoord) * vec4(u_material.emissiveColor, 1)
         : vec4(u_material.emissiveColor, 1);
  
+    //f_color = vec4(gl_FragCoord.x/1920.0, gl_FragCoord.y/1080.0, 0, 1); // Red Pixels to RightDown, Green to LeftUp, Yellow in Middle
     f_color = texture(u_baseMap, fs_in.v_texcoord) * vec4(color, 1) + emissive;
 }

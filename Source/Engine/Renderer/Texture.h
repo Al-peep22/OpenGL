@@ -34,7 +34,7 @@ namespace neu {
 		/// Gets the dimensions of the texture in pixels.
 		/// </summary>
 		/// <returns>A vec2 containing the width and height of the texture</returns>
-		vec2 GetSize() { return m_size;  }
+		glm::ivec2 GetSize() { return m_size;  }
 
 		void UpdateGui() override;
 
@@ -44,11 +44,11 @@ namespace neu {
 		//SDL_Texture* m_texture{nullptr};
 		GLuint m_texture = 0;
 		GLenum m_target = GL_TEXTURE_2D;
+		glm::ivec2 m_size{ 0, 0 };
 	private:
 		// Pointer to the underlying SDL texture object stored in GPU memory
 		// Initialized to nullptr and managed throughout the texture's lifetime
 
 		// The dimensions of the texture in pixels
-		vec2 m_size{ 0, 0 };
 	};
 }

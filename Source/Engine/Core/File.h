@@ -48,6 +48,8 @@ namespace neu::file {
     /// <returns>The file extension including the leading dot, or an empty string if there is no extension</returns>
     std::string GetExtension(const std::string& path);
 
+	std::string GetRelativePath(const std::string& path);
+
     /// <summary>
     /// Extracts the filename (including extension) from a given file path.
     /// This returns only the final component of the path, without any directory information.
