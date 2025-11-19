@@ -86,59 +86,64 @@ namespace neu {
     /// <param name="renderer">The renderer used to draw the actors.</param>
     void Scene::Draw(Renderer& renderer) {
         // get light
-        std::vector<LightComponent*> lights;
-        for (auto& actor : m_actors) {
-            if (!actor->active) continue;
-            auto light = actor->GetComponent<LightComponent>();
-            if (light && light->active) {
-                lights.push_back(light);
-            }
-        }
+        auto lights = GetActorComponents<LightComponent>();
 
-        // get camera
-        CameraComponent* camera = nullptr;
-        for (auto& actor : m_actors) {
-            if (!actor->active) continue;
-            camera = actor->GetComponent<CameraComponent>();
-            if (camera && camera->active) break;
-        }
+        // get cameras
+        auto cameras = GetActorComponents<CameraComponent>();
 
-        if (!camera) {
+        if (cameras.empty()) {
             LOG_WARNING("No camera active in scene");
-            return; 
+            return;
         }
 
-        // get program
-        std::set<Program*> programs;
+        // get programs
+        std::set<Program*> programSet;
         for (auto& actor : m_actors) {
             ModelRenderer* model = actor->GetComponent<ModelRenderer>();
             if (!model || !model->active) continue;
 
             if (model->material && model->material->program) {
-                programs.insert(model->material->program.get());
+                programSet.insert(model->material->program.get());
             }
         }
+        std::vector<Program*> programs(programSet.begin(), programSet.end());
 
-        for (auto program : programs) {
+        for (auto& camera : cameras) {
+            if (camera->outputTexture) {
+                camera->outputTexture->BindFramebuffer();
+                glViewport(0, 0, camera->outputTexture->m_size.x, camera->outputTexture->m_size.y);
+            }
+            camera->Clear();
+            DrawPass(renderer, programs, lights, camera);
+            if (camera->outputTexture) {
+                camera->outputTexture->UnbindFramebuffer();
+                glViewport(0, 0, renderer.GetWidth(), renderer.GetHeight());
+            }
+        }
+    }
+
+    void Scene::DrawPass(Renderer& renderer,
+        std::vector<Program*>& programs,
+        std::vector<LightComponent*>& lights,
+        CameraComponent* camera)
+    {
+        // Set shaders
+        for (auto& program : programs) {
             program->Use();
             program->SetUniform("u_ambient_light", m_ambientLight);
-            program->SetUniform("u_numLights", (int)lights.size());
+            program->SetUniform("u_numLights", static_cast<int>(lights.size()));
             camera->SetProgram(*program);
-            
-            int index = 0;
-            for (auto light : lights) {
-                std::string LightName = "u_lights[" + std::to_string(index++) + "]";
-                if (light) light->SetProgram(*program, LightName, camera->view);
+
+            // set lights
+            for (int i = 0; i < lights.size(); i++) {
+                std::string lightName = "u_lights[" + std::to_string(i) + "]";
+                lights[i]->SetProgram(*program, lightName, camera->view);
             }
         }
 
-        // Iterate through all actors in the scene
+        // Draw all actors in the scene
         for (auto& actor : m_actors) {
-            // Only render actors that are marked as active
-            // This parallels the Update() logic for consistency
             if (actor->active) {
-                // Pass the renderer to each actor
-                // Each actor is responsible for its own drawing implementation
                 actor->Draw(renderer);
             }
         }

@@ -27,5 +27,5 @@ void main()
 				 ? texture(u_baseMap, v_texcoord) * vec4(u_material.baseColor, 1)
 				 : vec4(u_material.baseColor, 1);
 
-	f_color = color;
+	f_color = texture(u_baseMap, v_texcoord);// color;
 }

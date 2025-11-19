@@ -30,7 +30,7 @@
                 {
                     "type": "ModelRenderer",
                     "model": "models/spot.obj",
-                    "material": "materials/reflection.mat"
+                    "material": "materials/rtt.mat"
                 },
                 {
                     "type": "RotationComponent",
@@ -59,11 +59,47 @@
             ]
         },
         {
+            "name": "window",
+            "persistent": true,
+            "transform": {
+                "position": [ 0, 0, 0 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "ModelRenderer",
+                    "model": "models/quad.obj",
+                    "material": "materials/rtt.mat"
+                }
+            ]
+        },
+        {
+            "name": "camera_rtt",
+            "persistent": true,
+            "transform": {
+                "position": [ 0, 2, 2 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            "components": [
+                {
+                    "type": "CameraComponent",
+                    "outputTexture": "renderTexture"
+                },
+                {
+                    "type": "FirstPersonController",
+                    "speed": 5,
+                    "sensitivity": 0.2
+                }
+            ]
+        },
+        {
             "name": "camera",
             "persistent": true,
             "transform": {
                 "position": [ 0, 2, 5 ],
-                "rotation": [ -50, 0, 0 ],
+                "rotation": [ 0, 0, 0 ],
                 "scale": [ 1, 1, 1 ]
             },
             "components": [
