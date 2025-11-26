@@ -6,8 +6,9 @@ namespace neu {
 	public:
 		CLASS_PROTOTYPE(ModelRenderer)
 
-			void Update(float dt) override;
+		void Update(float dt) override;
 		void Draw(Renderer& renderer) override;
+		void Draw(Renderer& renderer, Program& program);
 
 		void Read(const serial_data_t& value);
 		void UpdateGui() override;
