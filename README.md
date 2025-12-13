@@ -1,12 +1,12 @@
 # OpenGL Software Renderer
 
 ## Introduction
-This project is a real-time software renderer built in **C++** using **OpenGL**. It demonstrates fundamental computer graphics concepts such as shader pipelines, lighting models, and post-processing effects. The renderer is designed to be both educational and functional, showcasing how modern rendering techniques can be implemented from scratch.
+This project is a real-time software renderer built in **C++** using **OpenGL**. It demonstrates fundamental graphics concepts such as shader pipelines, lighting models, and post-processing effects. The renderer is designed to be both educational and functional, showcasing how modern rendering techniques can be implemented from scratch.
 
 ## Features
 - Vertex and fragment shader support
 - Gouraud and Phong lighting models
-- Post-processing effects (e.g., grayscale, blur, edge detection)
+- Post-processing effects (grayscale, blur, edge detection)
 - SDL2 window management and input handling
 - GLM-based math utilities for transformations
 - Configurable scene with multiple objects and lights
